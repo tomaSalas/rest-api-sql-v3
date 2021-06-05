@@ -6,14 +6,14 @@ const { asyncHandler } = require("../middleware/async-handler");
 const { authenticateUser } = require("../middleware/auth-user");
 
 
-router.get("/users", authenticateUser, asyncHandler(async (req, res) => {
+router.get("/", authenticateUser, asyncHandler(async (req, res) => {
     const user = req.currentUser;
   
   res.status(200).json(user);
   }));
 
   // Route that creates a new user.
-router.post("/users", asyncHandler(async (req, res) => {
+router.post("/", asyncHandler(async (req, res) => {
     try {
       await User.create(req.body);
       res.status(201).location("/").end();
