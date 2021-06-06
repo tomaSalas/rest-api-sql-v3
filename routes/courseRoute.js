@@ -75,6 +75,7 @@ router.put("/:id",  asyncHandler(async (req, res) => {
     
 }));
 
+// delete row of the table
 router.delete("/:id",  asyncHandler(async (req, res) => {
     const courseDelete = await Course.findByPk(req.params.id);
 
