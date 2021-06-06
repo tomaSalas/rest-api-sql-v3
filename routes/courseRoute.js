@@ -12,7 +12,7 @@ router.get("/",  asyncHandler(async (req, res) => {
         include: [{ model: User }]
     })
     if (courses) {
-        res.status(201).json(courses);
+        res.status(200).json(courses);
     } else {
         res.status(404).json({ message: "Ups no courses where found "});
     }
@@ -45,5 +45,47 @@ router.post("/",  asyncHandler(async (req, res) => {
       }
     
 }));
+
+// updates a course of the user requested
+router.put("/:id",  asyncHandler(async (req, res) => {
+    try {
+        const updateCourse = await Course.findByPk(req.params.id);
+        //using  express middleware to update the values
+        if (updateCourse) {
+            await course.update({
+              title: req.body.title,
+              description: req.body.description,
+              estimatedTime: req.body.estimatedTime,
+              materialsNeeded: req.body.materialsNeeded,
+              userId: req.body.userId
+            });
+            res.status(204).end();
+          } else {
+            res
+              .status(404).json({ message: "Ups, course not found" });
+          }
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+          const errors = error.errors.map(err => err.message);
+          res.status(400).json({ errors });   
+        } else {
+          throw error;
+        }
+      }
+    
+}));
+
+router.delete("/:id",  asyncHandler(async (req, res) => {
+    const courseDelete = await Course.findByPk(req.params.id);
+
+    if (courseDelete) {
+        await course.destroy();
+        res.status(204).end();
+    } else {
+        res.status(404).json( { message: "Ups, course not found"})
+    }
+}));
+
+
 
 module.exports = router;

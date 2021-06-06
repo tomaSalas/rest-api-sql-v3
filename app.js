@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const courseRoute = require("./routes/courseRoute");
 const intro = require("./routes/intro");
 const User = require("./models").User;
+const Course = require("./models").Course;
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -52,6 +53,12 @@ app.set('port', process.env.PORT || 5000);
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
+
+    const users = await User.findAll();
+    console.log(users); 
+    const courses = await Course.findAll();
+    console.log(courses);
+
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
