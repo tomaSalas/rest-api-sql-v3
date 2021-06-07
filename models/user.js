@@ -57,10 +57,14 @@ module.exports = (sequelize) => {
           notEmpty: {
             msg: "please provide a password"
           },
+        },
         //   len: {
         //     args: [8, 20],
         //     msg: "The password must be between 8 and 20 lenght "
         //   }
+        set(val) {
+          this.setDataValue("password", bcrypt.hashSync(value, 10));
+          
         }
       },
     }, { sequelize });
