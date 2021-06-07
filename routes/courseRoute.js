@@ -4,6 +4,7 @@ const router = express.Router();
 const Course = require('../models').Course;
 const User = require('../models').User;
 const { asyncHandler } = require("../middleware/async-handler");
+const { authenticateUser } = require("../middleware/auth-user");
 
 // get all courses afor the user requested
 router.get("/",  asyncHandler(async (req, res) => {
@@ -31,7 +32,7 @@ router.get("/:id",  asyncHandler(async (req, res) => {
     }
 }));
 // creates a new course of the user requested
-router.post("/",  asyncHandler(async (req, res) => {
+router.post("/", authenticateUser, asyncHandler(async (req, res) => {
     try {
         const newCourse = await Course.create(req.body);
         res.status(201).location("api/courses" + newCourse.id).end();
@@ -47,7 +48,7 @@ router.post("/",  asyncHandler(async (req, res) => {
 }));
 
 // updates a course of the user requested
-router.put("/:id",  asyncHandler(async (req, res) => {
+router.put("/:id", authenticateUser, asyncHandler(async (req, res) => {
     try {
         const updateCourse = await Course.findByPk(req.params.id);
         //using  express middleware to update the values
@@ -76,7 +77,7 @@ router.put("/:id",  asyncHandler(async (req, res) => {
 }));
 
 // delete row of the table
-router.delete("/:id",  asyncHandler(async (req, res) => {
+router.delete("/:id", authenticateUser,  asyncHandler(async (req, res) => {
     const courseDelete = await Course.findByPk(req.params.id);
 
     if (courseDelete) {
