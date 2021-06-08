@@ -19,7 +19,8 @@ const app = express();
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
 
-
+//middleware
+app.use(express.json())
 
 // Add routes.
 app.use("/", intro);

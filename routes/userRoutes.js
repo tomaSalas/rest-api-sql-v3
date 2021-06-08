@@ -8,14 +8,14 @@ const { authenticateUser } = require("../middleware/auth-user");
 
 router.get("/", authenticateUser, asyncHandler(async (req, res) => {
     const user = req.currentUser;
-  
-  res.status(200).json(user);
+    res.status(200).json(user);
   }));
 
   // Route that creates a new user.
 router.post("/", authenticateUser, asyncHandler(async (req, res) => {
     try {
       await User.create(req.body);
+      
       res.status(201).location("/").end();
     } catch (error) {
       if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {

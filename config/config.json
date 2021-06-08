@@ -1,8 +1,7 @@
 {
   "development": {
-    "database": "fsjstd-restapi.db",
-    "host": "127.0.0.1",
-    "dialect": "sqlite"
+    "dialect": "sqlite",
+    "storage": "fsjstd-restapi.db"
   },
   "test": {
     "database": "database_test",
