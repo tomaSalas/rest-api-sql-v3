@@ -6,18 +6,19 @@ const User = require('../models').User;
 const { asyncHandler } = require("../middleware/async-handler");
 const { authenticateUser } = require("../middleware/auth-user");
 
-// get all courses afor the user requested
-router.get("/",  asyncHandler(async (req, res) => {
+// get all courses and the users
+router.get("/", asyncHandler(async (req, res) => {
     
     const courses = await Course.findAll({ 
         include: [{ model: User }]
-    })
+    });
     if (courses) {
         res.status(200).json(courses);
     } else {
         res.status(404).json({ message: "Ups no courses where found "});
     }
 }));
+
 
 // gets a specific courses for the user requested
 router.get("/:id",  asyncHandler(async (req, res) => {
@@ -34,6 +35,8 @@ router.get("/:id",  asyncHandler(async (req, res) => {
 // creates a new course of the user requested
 router.post("/", authenticateUser, asyncHandler(async (req, res) => {
     try {
+        console.log(req.body);
+        console.log("asdfasdfasdf");
         const newCourse = await Course.create(req.body);
         res.status(201).location("api/courses" + newCourse.id).end();
     } catch (error) {
@@ -53,7 +56,7 @@ router.put("/:id", authenticateUser, asyncHandler(async (req, res) => {
         const updateCourse = await Course.findByPk(req.params.id);
         //using  express middleware to update the values
         if (updateCourse) {
-            await course.update({
+            await updateCourse.update({
               title: req.body.title,
               description: req.body.description,
               estimatedTime: req.body.estimatedTime,
@@ -79,12 +82,11 @@ router.put("/:id", authenticateUser, asyncHandler(async (req, res) => {
 // delete row of the table
 router.delete("/:id", authenticateUser,  asyncHandler(async (req, res) => {
     const courseDelete = await Course.findByPk(req.params.id);
-
     if (courseDelete) {
-        await course.destroy();
+        await courseDelete.destroy();
         res.status(204).end();
     } else {
-        res.status(404).json( { message: "Ups, course not found"})
+        res.status(404).json( { message: "Ups, course not found" });
     }
 }));
 

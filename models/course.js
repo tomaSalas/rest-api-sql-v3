@@ -38,7 +38,12 @@ module.exports = (sequelize) => {
       materialsNeeded: {
         type: DataTypes.STRING,
       },
-    }, { sequelize });
+     }, { 
+    //     creatAt: false,
+    //     updateAt: false,
+    //     timestamps: false, // disable timestamps
+       sequelize 
+      });
     
     Course.associate = (models) => {
         // TODO Add associations.
